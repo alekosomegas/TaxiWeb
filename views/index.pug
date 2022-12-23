@@ -1,5 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+
+  div(class="bg-image", 
+      style=` 
+      background-size: cover;
+      background-image:url(${"/images/home.jpg"})`)
+      
+      div.container 
+        include ./partials/_ride_form.pug
+
+      script(src="/javascripts/index.js" type="module") 
+
+  #map 
+      //- h1= title
+      //- p Welcome to #{title}
+

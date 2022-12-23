@@ -1,0 +1,28 @@
+.form-container.bg-dark
+    .form.p-2
+        .p-1
+            h5 Book a Taxi
+        div.form-group.p-2#from
+            label(for="from") From:
+            input#from.bg-dark.text-white.form-control(type="text", placeholder="Pick-up location") 
+        div.form-group.p-2
+            label(for="to") To:
+            input#to.bg-dark.text-white.form-control(type="text", placeholder="Drop-off location") 
+        div.form-group.p-2
+            label(for="pickatime") Date and Time:
+
+            link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css")
+            script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+            script(src="https://cdn.jsdelivr.net/npm/flatpickr")
+
+            input.bg-dark.text-white.form-control(type="text" id="pickadateandtime" class="pickatime")
+            script.
+                $("#pickadate").flatpickr();
+                $("#pickadateandtime").flatpickr({enableTime: true,dateFormat: "Y-m-d                     @  H:i"});
+
+
+
+    .pt-1
+        button.btn-full(type="submit") Book now
+            i.fa.fa-arrow-right
+
