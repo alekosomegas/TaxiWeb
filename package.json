@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "build": "babel public/javascripts/index.js -d dist",
     "start": "node ./bin/www",
     "devStart": "nodemon ./bin/www"
   },
@@ -13,13 +14,18 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-    "leaflet-geosearch": "^3.7.0",
     "leaflet-search": "^3.0.5",
     "mongoose": "^6.8.1",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11"
   },
   "devDependencies": {
-    "dotenv": "^16.0.3"
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
+    "dotenv": "^16.0.3",
+    "leaflet-geosearch": "^3.7.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
