@@ -15,7 +15,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-var marker = L.marker([34.70612, 33.11655]).addTo(map);
+// var marker = L.marker([34.70612, 33.11655]).addTo(map);
 
 
 
@@ -72,7 +72,7 @@ console.log(results[0].label)
 
 
 
-var input = document.getElementById("from-input");
+var inputFrom = document.getElementById("from-input");
 var inputTo = document.getElementById("to-input");
 
 
@@ -92,21 +92,63 @@ var inputTo = document.getElementById("to-input");
 //     }
 // })
 
+const comma = ", ";
+const suggestionsFrom = document.querySelector(".suggestionsFrom ul")
+const suggestionsTo = document.querySelector(".suggestionsTo ul")
 
-const suggestions = document.querySelector(".suggestions ul")
+var fromCoordinates = [];
+var toCoordinates = [];
 
-async function searchAddress(str) {
-    let results = await provider.search({ query: str})
+function formatSuggestionDisplay (item) {
+    let displayString = ""
 
-    console.log(results)
+    if (item.building != undefined) {
+        displayString += item.building + comma;
+    }
+    if (item.road != undefined) {
+        displayString += item.road + comma;
+    }
+    if (item.quarter != undefined) {
+        displayString += item.quarter + comma;
+    }
+    if (item.suburb != undefined) {
+        displayString += item.suburb + comma;
+    }
+    if (item.neighbourhood != undefined) {
+        displayString += item.neighbourhood + comma;
+    }
+    if (item.village != undefined) {
+        displayString += item.village + comma;
+    }
+    if (item.state_district != undefined) {
+        displayString += item.state_district + comma;
+    }
+    if (item.postcode != undefined) {
+        displayString += item.postcode;
+    }
+
+    return displayString;
+}
+
+async function searchAddress(str, field) {
+    let results = await provider.search({ query: str })
+    let suggestions;
+    field == "from-input"? suggestions = suggestionsFrom : suggestions = suggestionsTo;
 
     suggestions.innerHTML = "";
 
     if(results.length > 0) {
         for (var i=0; i < results.length; i++) {
             let item = results[i];
-            suggestions.innerHTML += `<li>${item.label}</li>`;
-            console.log(results[i].label)
+
+            // exclude north
+            if (item.raw.address.state != "Νότια Κύπρος") {
+                continue;
+            }
+
+            let displayString = item.label;
+            suggestions.innerHTML += `<li class=${field} id=${results[i].x +","+ results[i].y}>${displayString}</li>`;
+
         }
     } else {
         results = [];
@@ -117,35 +159,54 @@ async function searchAddress(str) {
 
 function searchHandler(e) {
     const inputVal = e.currentTarget.value;
-    console.log(e.currentTarget.value)
     let results = [];
-    if(inputVal.length > 0) {
-        results = searchAddress(inputVal);
-        // console.log(results)
-    }
-    // showSuggestions(results, inputVal);
-}
-
-function showSuggestions(results, inputVal) {
-    suggestions.innerHTML = "";
-
-    if(results.length > 0) {
-        for (i=0; i < results.length; i++) {
-            let item = results[i.label];
-            suggestions.innerHTML += `<li>${item}</li>`;
-            console.log(results[i].label)
-        }
-    } else {
-        results = [];
-		suggestions.innerHTML = '';
+    if(inputVal.length > 1) {
+        results = searchAddress(inputVal, e.currentTarget.id);
     }
 }
 
 function useSuggestion(e) {
+    let input
+    let suggestions
+    let coordinates
+    if (e.target.className == "from-input") {
+        suggestions = suggestionsFrom
+        input = inputFrom;
+        inputTo.focus();
+        coordinates = fromCoordinates;
+    } else {
+        suggestions = suggestionsTo
+        input = inputTo;
+        coordinates = toCoordinates
+    }
+
 	input.value = e.target.innerText;
-	input.focus();
 	suggestions.innerHTML = '';
+
+    let targetCoordinates = e.target.id;
+
+    coordinates[0] = targetCoordinates.split(",")[1];
+    coordinates[1] = targetCoordinates.split(",")[0];
+
+    L.marker(coordinates, {draggable:'true'}).addTo(map);
+    map.setView(coordinates)
+
+    if (e.target.className == "to-input") {
+        var latlngs = [
+            toCoordinates,
+            fromCoordinates
+        ];
+        
+        var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+
+        // zoom the map to the polyline
+        map.fitBounds(polyline.getBounds());
+    }
+
 }
 
-input.addEventListener("keyup", searchHandler)
-suggestions.addEventListener('click', useSuggestion);
+
+inputFrom.addEventListener("keyup", searchHandler)
+inputTo.addEventListener("keyup", searchHandler)
+suggestionsFrom.addEventListener("click", useSuggestion)
+suggestionsTo.addEventListener("click", useSuggestion)

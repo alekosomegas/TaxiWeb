@@ -1,6 +1,6 @@
 "use strict";
 
-var _leafletGeosearch = require("leaflet-geosearch");
+var _leafletGeosearch = require("C:/Users/Alexandros/Documents/TaxiWeb/node_modules/leaflet-geosearch/dist/index");
 // const { search } = require("../../routes");
 console.log("ok");
 

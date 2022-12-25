@@ -1,20 +1,19 @@
 .form-container.bg-dark
     .form.p-2
         .p-1
-            h5 Book a Taxi
-        div.form-group.p-2#from
-            label(for="from-input") From:
-            input#from-input.bg-dark.text-white.form-control(type="text", placeholder="Pick-up location") 
-            .suggestions 
-                ul 
-        
-        div.form-group.p-2
-            label(for="to-inpu") To:
-            input#to-input.bg-dark.text-white.form-control(type="text", placeholder="Drop-off location") 
-            .suggestionsTo 
-                ul 
+            h5 Request a Taxi
 
-        div.form-group.p-2
+        div.form-group
+            input#from-input.text-white.form-control(type="text", placeholder="Pick-up location") 
+            .suggestionsFrom 
+                ul.ulFrom 
+        
+        div.form-group
+            input#to-input.text-white.form-control(type="text", placeholder="Drop-off location") 
+            .suggestionsTo 
+                ul.ulTo
+
+        div.form-group
             label(for="pickatime") Date and Time:
 
             link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css")
