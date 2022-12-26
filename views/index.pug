@@ -2,17 +2,19 @@ extends layout
 
 block content
 
-  div(class="bg-image flex", 
+  div(class="bg-image", 
       style=` 
       background-size: cover;
       background-image:url(${"/images/home.jpg"})`)
       
-      div.container 
+      div.row
         include ./partials/_ride_form.pug
 
+        #map 
 
 
-  #map 
+  include ./partials/_contact.pug
+
       //- h1= title
       //- p Welcome to #{title}
 

@@ -4,30 +4,32 @@
             h5 Request a Taxi
 
         div.form-group
+            label(for="from-input") Pick Up:
             input#from-input.text-white.form-control(type="text", placeholder="Pick-up location") 
             .suggestionsFrom 
-                ul.ulFrom 
+                ul 
         
         div.form-group
+            label(for="to-input") Destination:
             input#to-input.text-white.form-control(type="text", placeholder="Drop-off location") 
             .suggestionsTo 
-                ul.ulTo
+                ul
 
         div.form-group
             label(for="pickatime") Date and Time:
 
-            link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css")
+            link(rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/dark.css")
             script(src="https://code.jquery.com/jquery-3.3.1.min.js")
             script(src="https://cdn.jsdelivr.net/npm/flatpickr")
 
-            input.bg-dark.text-white.form-control(type="text" id="pickadateandtime" class="pickatime")
+            input.text-white.form-control(type="text" id="pickadateandtime" class="pickatime")
             script.
                 $("#pickadate").flatpickr();
-                $("#pickadateandtime").flatpickr({enableTime: true,dateFormat: "Y-m-d                     @  H:i"});
+                $("#pickadateandtime").flatpickr({defaultDate: new Date(), enableTime: true,dateFormat: "Y-m-d                     @  H:i"});
 
 
 
-    .pt-1
-        button.btn-full(type="submit") Book now
+    div
+        button.btn.btn-full(type="submit" onclick="location.replace('book')") Book now
             i.fa.fa-arrow-right
 

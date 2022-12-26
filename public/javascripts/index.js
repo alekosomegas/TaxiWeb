@@ -94,6 +94,7 @@ function searchHandler(e) {
     }
 }
 var polyline;
+const mapDom = document.querySelector("#map")
 
 function useSuggestion(e) {
     let input
@@ -101,6 +102,10 @@ function useSuggestion(e) {
     let coordinates
     let markerTitle
     let location
+
+    // TODO: remove markers from map if input is emty
+    mapDom.style.visibility = 'visible';
+
     if (e.target.className == "from-input") {
         suggestions = suggestionsFrom
         input = inputFrom;
@@ -130,12 +135,9 @@ function useSuggestion(e) {
         var marker = L.marker(coordinates, { draggable:'true', autoPan: true, riseOnHover: true, title: markerTitle }).addTo(map);
     }
 
-    map.setView(coordinates)
+    map.setView(coordinates, 25)
     marker.addEventListener("moveend", markerMoveHandler)
     location.marker = marker;
-
-
-
 
     if (e.target.className == "to-input") {
         var latlngs = [
@@ -186,5 +188,6 @@ async function markerMoveHandler(e) {
 
 inputFrom.addEventListener("keyup", searchHandler)
 inputTo.addEventListener("keyup", searchHandler)
+
 suggestionsFrom.addEventListener("click", useSuggestion)
 suggestionsTo.addEventListener("click", useSuggestion)
